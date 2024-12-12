@@ -1,0 +1,41 @@
+#!/sbin/sh
+
+TMPDIR=/dev/tmp
+MOUNTPATH=/dev/magisk_img
+MODPATH=$TMPDIR/module
+
+# Echo to recovery/Magisk
+ui_print() {
+  echo "$1"
+}
+
+# Load util_functions.sh
+if [ -f /data/adb/magisk/util_functions.sh ]; then
+  . /data/adb/magisk/util_functions.sh
+  MODPATH=/data/adb/modules/touch_freeze_fix
+else
+  ui_print "! Cannot find util_functions.sh"
+  exit 1
+fi
+
+# Prepare module directory
+rm -rf $MODPATH 2>/dev/null
+mkdir -p $MODPATH
+
+ui_print "********************************"
+ui_print "   Touch Freeze Fix Module     "
+ui_print "********************************"
+
+ui_print "- Extracting module files"
+unzip -o "$3" -d $MODPATH >&2
+
+ui_print "- Setting permissions"
+set_perm_recursive $MODPATH 0 0 0755 0644
+set_perm $MODPATH/service.sh 0 0 0755
+
+ui_print "- Creating module paths"
+mkdir -p $MODPATH/system
+touch $MODPATH/auto_mount
+
+ui_print "- Installation complete"
+exit 0
