@@ -1,0 +1,8 @@
+id=touch_freeze_fix
+name=Touch Freeze Fix
+version=v1.0
+versionCode=1
+author=Ingsha Sawaden
+description=Fixes touch screen freeze issues
+minMagisk=20000
+uninstall=true
